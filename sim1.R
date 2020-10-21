@@ -22,17 +22,47 @@ nlag = 50
 # avec limit ylim
 plot(acf(sim2ts, lag.max = nlag, plot = FALSE), ylim = c(-1,1)) # Roh(0)=1 donc pas de sens de significativité
 
-### SIM1
+# -*-*-*-*-* SIM1 -*-*-*-*-*
 
 # ACF pour le choix de prccessus MA(q) à regarder par rapport au graphe de decroissance PACF. Ceci permet de vérifier
 # l'hypothèse de stationarité supposé implicitement au debut. 
-
 # PACF décroisance sinusoidal
 
-## TEST des modeles supposé
 
-sim1.arima = arima(sim1, order = c(0,0,1), include.mean = TRUE)
-summary(sim1.arima)
-t_stat((sim1.arima))
+# -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+## Test des modele MA(1)
+sim1.ma1 = arima(sim1, order = c(0,0,1), include.mean = TRUE)  # MA(1) c(2,0,0) AR(2)
+summary(sim1.ma1)
+# student
+t_stat((sim1.ma1))
 
-Box.test.2(sim1.arima$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim = 5)
+# test de portementeau
+Box.test.2(sim1.ma1$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim = 2)
+# all p-value are greather than 0.005, donc on rejette pas H0. Rejette de l'hypotehse de blanceu
+
+# sans la constante
+sim1.a1_ = arima(sim1, order = c(0,0,1), include.mean = FALSE) 
+summary(sim1.ma1_)
+
+
+# -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+## Test modele  MA(2)
+sim1.ma2 = arima(sim1, order = c(0,0,2), include.mean = TRUE)  # MA(1) c(2,0,0) AR(2)
+summary(sim1.ma2)
+# student
+t_stat((sim1.ma2))
+
+## Test modele  AR(4)
+sim1.ar4 = arima(sim1, order = c(4,0,0), include.mean = TRUE)  # MA(1) c(2,0,0) AR(2)
+summary(sim1.ar4)
+# student
+t_stat((sim1.ar4))
+
+# test de portementeau
+Box.test.2(sim1.ar4$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim = 2)
+
+
+# -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+
+
