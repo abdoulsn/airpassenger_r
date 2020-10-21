@@ -66,6 +66,17 @@ Box.test.2(sim1.ar4$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim =
 
 # EXERCICE 1
 # Viz des sortie ACF de la serie suivant: Xt =  100+3t+Et ou Et --> N(0,15^2)
+# Yt = Xt − Xt−1 .
 
-Et = rnorm(1:100)
+t = 1:100
+n = 200
+T=100+3*t
 
+set.seed(125)
+eps = rnorm(n, sd=15)
+X = T+eps
+Y=diff(X, lag = 1, differences = 1)
+
+plot(x = ts(X))
+plot(x = ts(Y))
+acf(X, lag.max = nlag, ylim=c(-1,1) )
