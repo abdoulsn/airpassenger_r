@@ -67,16 +67,34 @@ Box.test.2(sim1.ar4$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim =
 # EXERCICE 1
 # Viz des sortie ACF de la serie suivant: Xt =  100+3t+Et ou Et --> N(0,15^2)
 # Yt = Xt − Xt−1 .
-
-t = 1:100
+par(mfrow=c(3,2))
 n = 200
+t = 1:n
 T=100+3*t
 
 set.seed(125)
 eps = rnorm(n, sd=15)
 X = T+eps
-Y=diff(X, lag = 1, differences = 1)
+Y = diff(X, lag = 1, differences = 1)
 
 plot(x = ts(X))
 plot(x = ts(Y))
 acf(X, lag.max = nlag, ylim=c(-1,1) )
+
+# Yt = Xt − Xt−1 .
+base::diff(X,lag=1, differences=1) -> Y
+acf(Y, lag.max = nlag, ylim=c(-1,1))
+pacf(Y, lag.max = nlag, ylim=c(-1,1))
+
+# On a definit p et q via respectivement ACP et PACF, d la diff appliquer. On sait maintenant que le model ets c(3,1,1)
+# On revient au model arima.
+sim3.arma311 = arima(X, order = c(3,1,1), include.mean = FALSE)  # ou use Y si c(3,0,1)
+summary(sim3.arma311)
+# student
+t_stat((sim3.arma311))
+# MA non significatif on retire le MA, si on avait beaucoup de MA on retire un par un pour voir
+# significativité des autres et modifié encore. Faire comme le stpewise.
+
+
+# test de portmenteau
+Box.test.2(sim3.arma311$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim = 2) #doivent etre sup a 0.05
