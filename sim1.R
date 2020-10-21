@@ -64,5 +64,8 @@ Box.test.2(sim1.ar4$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", decim =
 
 # -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+# EXERCICE 1
+# Viz des sortie ACF de la serie suivant: Xt =  100+3t+Et ou Et --> N(0,15^2)
 
+Et = rnorm(1:100)
 
