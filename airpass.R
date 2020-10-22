@@ -33,7 +33,7 @@ Box.test.2(airpass.arima$residuals, nlag = c(5,10,15,20), type = "Ljung-Box", de
 # REGARDER LE RHO(CHAPO) POUR GRAND P(=1 une seul barre superieur), Q, D
 
 
-# Applying 
+# Applying sarima
 
 acf(Z, lag.max = 11, ylim=c(-1,1))
 pacf(Z, lag.max = 11, ylim=c(-1,1))
